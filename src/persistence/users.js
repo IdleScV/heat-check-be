@@ -29,5 +29,11 @@ module.exports = {
     SELECT * FROM users WHERE email=${email} LIMIT 1;
     `);
     return rows[0];
+  },
+  async update(id, email, password) {
+    const {rows} = await db.query(sql`
+    UPDATE users SET email=${email}, password=${password} WHERE id=${id} RETURNING id, email;
+    `);
   }
+
 };
