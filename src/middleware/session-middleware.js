@@ -1,7 +1,7 @@
-const Session = require('../persistence/sessions');
+const Session = require("../persistence/sessions");
 
 const sessionMiddleware = async (request, response, next) => {
-  console.log("here we are at middleware", request.query)
+  console.log("here we are at middleware", request.query);
   if (!request.query.session) {
     return response.sendStatus(401);
   }
@@ -11,7 +11,7 @@ const sessionMiddleware = async (request, response, next) => {
     const session = await Session.find(request.query.session);
 
     if (!session) {
-      query.session = null;
+      request.query.session = null;
       return response.sendStatus(401);
     }
 
@@ -19,7 +19,7 @@ const sessionMiddleware = async (request, response, next) => {
     next();
   } catch (error) {
     console.error(
-      `SessionMiddleware(${query.session}) >> Error: ${error.stack}`
+      `SessionMiddleware(${request.query.session}) >> Error: ${error.stack}`
     );
     return response.sendStatus(500);
   }

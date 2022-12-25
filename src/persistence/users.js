@@ -1,14 +1,14 @@
-const sql = require('sql-template-strings');
-const {v4: uuidv4} = require('uuid');
-const bcrypt = require('bcrypt');
-const db = require('./db');
+const sql = require("sql-template-strings");
+const { v4: uuidv4 } = require("uuid");
+const bcrypt = require("bcrypt");
+const db = require("./db");
 
 module.exports = {
   async create(email, password) {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const {rows} = await db.query(sql`
+      const { rows } = await db.query(sql`
       INSERT INTO users (id, email, password)
         VALUES (${uuidv4()}, ${email}, ${hashedPassword})
         RETURNING id, email;
@@ -17,7 +17,7 @@ module.exports = {
       const [user] = rows;
       return user;
     } catch (error) {
-      if (error.constraint === 'users_email_key') {
+      if (error.constraint === "users_email_key") {
         return null;
       }
 
@@ -25,15 +25,15 @@ module.exports = {
     }
   },
   async find(email) {
-    const {rows} = await db.query(sql`
+    const { rows } = await db.query(sql`
     SELECT * FROM users WHERE email=${email} LIMIT 1;
     `);
     return rows[0];
   },
   async update(id, email, password) {
-    const {rows} = await db.query(sql`
+    const { rows } = await db.query(sql`
     UPDATE users SET email=${email}, password=${password} WHERE id=${id} RETURNING id, email;
     `);
-  }
-
+    return rows[0];
+  },
 };
