@@ -1,7 +1,7 @@
-const Session = require("../persistence/sessions");
+const Session = require('../persistence/sessions');
 
 const sessionMiddleware = async (request, response, next) => {
-  console.log("here we are at middleware", request.query);
+  console.log('here we are at middleware', request.query);
   if (!request.query.session) {
     return response.sendStatus(401);
   }
