@@ -30,7 +30,7 @@ router.post('/', async (request, response) => {
 });
 
 router.get('/', sessionMiddleware, (request, response) => {
-  response.json({id: request.userId});
+  response.json(request.user);
 });
 
 router.delete('/', async (request, response) => {

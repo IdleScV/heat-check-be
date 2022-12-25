@@ -32,7 +32,7 @@ module.exports = {
   },
   async findById(id) {
     const {rows} = await db.query(sql`
-    SELECT * FROM users WHERE id=${id} LIMIT 1;
+    SELECT id, email FROM users WHERE id=${id} LIMIT 1;
     `);
     return rows[0];
   },
