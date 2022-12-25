@@ -24,9 +24,15 @@ module.exports = {
       throw error;
     }
   },
-  async find(email) {
+  async findByEmail(email) {
     const {rows} = await db.query(sql`
     SELECT * FROM users WHERE email=${email} LIMIT 1;
+    `);
+    return rows[0];
+  },
+  async findById(id) {
+    const {rows} = await db.query(sql`
+    SELECT * FROM users WHERE id=${id} LIMIT 1;
     `);
     return rows[0];
   },

@@ -9,19 +9,15 @@ const sessionMiddleware = require('../middleware/session-middleware');
 const router = new Router();
 
 router.post('/', async (request, response) => {
-  console.log('request.body', request.body);
   try {
     const {email, password} = request.body;
-    // eslint-disable-next-line unicorn/no-fn-reference-in-iterator
-    const user = await User.find(email);
-    console.log('We found a user', user);
+    const user = await User.findByEmail(email);
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return response.status(403).json({});
     }
 
     const sessionId = await Session.create(user.id);
     request.session.id = sessionId;
-    console.log('We Created a session', sessionId);
     response.status(201).json({
       sessionId
     });
