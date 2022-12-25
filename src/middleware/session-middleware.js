@@ -2,7 +2,6 @@ const Session = require('../persistence/sessions');
 const User = require('../persistence/users');
 
 const sessionMiddleware = async (request, response, next) => {
-  console.log('here we are at middleware', request.query);
   if (!request.query.session) {
     return response.sendStatus(401);
   }
@@ -15,6 +14,7 @@ const sessionMiddleware = async (request, response, next) => {
       request.query.session = null;
       return response.sendStatus(401);
     }
+
     request.user = await User.findById(session.userId);
     next();
   } catch (error) {

@@ -27,12 +27,11 @@ router.post('/', async (request, response) => {
   }
 });
 
+// Currently not being used
 router.get('/', sessionMiddleware, async (request, response) => {
   try {
     const {id} = request.query;
-    console.log('WE GOT HERE!!', request.query);
     const user = await User.findById(id);
-
     if (!user) {
       return response.status(403).json({});
     }
