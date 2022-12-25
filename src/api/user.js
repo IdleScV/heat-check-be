@@ -27,28 +27,22 @@ router.post('/', async (request, response) => {
   }
 });
 
-router.get('/', 
-sessionMiddleware, 
-async (request, response) => {
-  
+router.get('/', sessionMiddleware, async (request, response) => {
   try {
-
     const {id} = request.query;
-    console.log("WE GOT HERE!!",  request.query)
+    console.log('WE GOT HERE!!', request.query);
     const user = await User.findById(id);
-   
-    if (!user ) {
+
+    if (!user) {
       return response.status(403).json({});
     }
 
     response.status(201).json({
       id: user.id,
-      email: user.email,
+      email: user.email
     });
   } catch (error) {
-    console.error(
-      `GET user ({ email: ${request.body} }) >> ${error.stack})`
-    );
+    console.error(`GET user ({ email: ${request.body} }) >> ${error.stack})`);
     response.status(500).json();
   }
 });
